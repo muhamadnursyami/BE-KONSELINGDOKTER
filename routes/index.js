@@ -1,6 +1,7 @@
 const express = require("express");
 const route = express.Router();
 const pasienRoute = require("./pasienRoute");
+const adminRoute = require("./adminRoute");
 route.get("/", (req, res) => {
   try {
     res.status(200).json("Selamat Datang di Server Konseler Dokter");
@@ -11,5 +12,5 @@ route.get("/", (req, res) => {
 });
 
 route.use("/pasiens", pasienRoute);
-
+route.use("/admins", adminRoute);
 module.exports = route;
