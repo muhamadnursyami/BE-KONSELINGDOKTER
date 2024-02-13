@@ -14,10 +14,12 @@ const {
 // ! MAKA IMPORTNYA JUGA MENGGUNAKAN TANDA {}
 // ! JIKA TIDAK ADA MAKA TIDAK DIBIKIN JUGA
 // ! SEPERTI INI CONTOHNYA FUNCTION AUTHENTICATE TOKEN TERHUBUNG DENGAN MIDDLEWARE AUTH.JS
-// const { authenticateToken } = require("../middleware/auth");
-const authenticateToken = require("../middleware/auth");
+const { authenticateToken, authorizationRoles } = require("../middleware/auth");
+// const authenticateToken = require("../middleware/auth");
+// contoh penggunaan AUTHENTICATE DAN AUTHORIZATION
+//! route.get("/", authenticateToken, authorizationRoles("admin"), getAllPasien);
 route.post("/", createPasien);
-route.get("/", authenticateToken, getAllPasien);
+route.get("/", getAllPasien);
 route.get("/:id", getPasienById);
 route.get("/:id/jadwal", getJadwalPasienById);
 route.delete("/:id", deletePasienById);

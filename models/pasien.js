@@ -6,7 +6,7 @@ const pasienSchema = new mongoose.Schema({
   password: String,
   alamat: String,
   noTelepon: String,
-  role: { type: String, enum: ["pasien", "admin"], default: "pasien" },
+  role: { type: String, default: "pasien" },
 });
 
 module.exports = mongoose.model("Pasien", pasienSchema);

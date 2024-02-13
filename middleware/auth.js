@@ -23,11 +23,24 @@ const authenticateToken = async (req, res, next) => {
 
     //   memverifikasi sebuah token
     const verifyToken = jwt.verify(token, process.env.JWT_KEY);
+    // memasukan verify token  untuk di simpan  kedalam req.user
+    // tujuany agardapat di akses dan digunakan oleh middlware selanjutnya
+    // dan ini adalah bawaan dari kode, jika sudah memverify maka langsung disimpan kedalam req.user
     req.user = verifyToken;
+    //  jika berhasil maka selanjutnya jalankan middleware dibawahnya
     next();
   } catch (error) {
     next(error);
   }
+};
+// membuat middlware untuk role apa saya yang dizinkan untuk mengakses tertentu
+const authorizationRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      throw new Error("Unauthorized to access this route");
+    }
+    next();
+  };
 };
 
 // ! TOLONG PERHATIKAN CARA IMPORT NYA
@@ -36,5 +49,5 @@ const authenticateToken = async (req, res, next) => {
 // ! MAKA IMPORTNYA JUGA MENGGUNAKAN TANDA {}
 // ! JIKA TIDAK ADA MAKA TIDAK DIBIKIN JUGA
 
-// module.exports = { authenticateToken };
-module.exports = authenticateToken;
+module.exports = { authenticateToken, authorizationRoles };
+// module.exports = authenticateToken;
