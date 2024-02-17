@@ -6,6 +6,7 @@ const spesialisasiRoute = require("./spesialisasiRoute");
 const konselorRoute = require("./konselorRoute");
 const jenisKonselingRoute = require("./jenisKonselingRoute");
 const authRoute = require("./authRoute");
+const bookingRoute = require("./bookingRoute");
 route.get("/", (req, res) => {
   try {
     res.status(200).json("Selamat Datang di Server Konseler Dokter");
@@ -21,4 +22,5 @@ route.use("/spesialisasis", spesialisasiRoute);
 route.use("/konselors", konselorRoute);
 route.use("/jenisKonselings", jenisKonselingRoute);
 route.use("/auth", authRoute);
+route.use("/bookings", bookingRoute);
 module.exports = route;
