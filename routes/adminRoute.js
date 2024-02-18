@@ -7,11 +7,18 @@ const {
   deleteAdminById,
   editAdmin,
 } = require("../controllers/admin.controller");
-route.post("/", createAdmin);
-route.get("/", getAllAdmin);
 
-route.get("/:id", getAdminById);
-route.put("/:id", editAdmin);
-route.delete("/:id", deleteAdminById);
+const { authenticateToken, authorizationRoles } = require("../middleware/auth");
+
+route.post("/", createAdmin);
+route.get("/", authenticateToken, authorizationRoles("admin"), getAllAdmin);
+route.get("/:id", authenticateToken, authorizationRoles("admin"), getAdminById);
+route.put("/:id", authenticateToken, authorizationRoles("admin"), editAdmin);
+route.delete(
+  "/:id",
+  authenticateToken,
+  authorizationRoles("admin"),
+  deleteAdminById
+);
 
 module.exports = route;

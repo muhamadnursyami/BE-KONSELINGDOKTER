@@ -12,12 +12,44 @@ const {
 } = require("../controllers/konselor.controller");
 
 const route = express.Router();
-
-route.get("/", getAllKonselor);
+const { authenticateToken, authorizationRoles } = require("../middleware/auth");
+route.get(
+  "/",
+  authenticateToken,
+  authorizationRoles("admin", "pasien"),
+  getAllKonselor
+);
 route.get("/data-konselor", getDataKonselor);
-route.get("/:id", getKonselorById);
-route.get("/:id/jadwal", getJadwalKonselorById);
-route.post("/", upload.single("avatar"), createKonselor);
-route.put("/:id", upload.single("avatar"), editKonselor);
-route.delete("/:id", deleteKonselor);
+route.get(
+  "/:id",
+  authenticateToken,
+  authorizationRoles("admin", "konselor", "pasien"),
+  getKonselorById
+);
+route.get(
+  "/:id/jadwal",
+  authenticateToken,
+  authorizationRoles("admin", "konselor"),
+  getJadwalKonselorById
+);
+route.post(
+  "/",
+  upload.single("avatar"),
+  authenticateToken,
+  authorizationRoles("admin"),
+  createKonselor
+);
+route.put(
+  "/:id",
+  upload.single("avatar"),
+  authenticateToken,
+  authorizationRoles("admin", "konselor"),
+  editKonselor
+);
+route.delete(
+  "/:id",
+  authenticateToken,
+  authorizationRoles("admin"),
+  deleteKonselor
+);
 module.exports = route;

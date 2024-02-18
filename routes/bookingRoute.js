@@ -7,11 +7,31 @@ const {
   getAllBooking,
   getBookingById,
 } = require("../controllers/booking.controller");
-
-route.get("/", getAllBooking);
-route.get("/:id", getBookingById);
-route.post("/", createdBooking);
-route.put("/:id", editBooking);
-route.delete("/:id", deleteBooking);
+const { authenticateToken, authorizationRoles } = require("../middleware/auth");
+route.get("/", authenticateToken, authorizationRoles("admin"), getAllBooking);
+route.get(
+  "/:id",
+  authenticateToken,
+  authorizationRoles("admin", "konselor", "pasien"),
+  getBookingById
+);
+route.post(
+  "/",
+  authenticateToken,
+  authorizationRoles("admin", "pasien"),
+  createdBooking
+);
+route.put(
+  "/:id",
+  authenticateToken,
+  authorizationRoles("admin", "pasien"),
+  editBooking
+);
+route.delete(
+  "/:id",
+  authenticateToken,
+  authorizationRoles("admin"),
+  deleteBooking
+);
 
 module.exports = route;

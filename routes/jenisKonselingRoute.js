@@ -7,10 +7,26 @@ const {
   getAllJenisKonseling,
   getJenisKonselingById,
 } = require("../controllers/jenisKonseling.controller");
+const { authenticateToken, authorizationRoles } = require("../middleware/auth");
 route.get("/", getAllJenisKonseling);
 route.get("/:id", getJenisKonselingById);
-route.post("/", createJenisKonseling);
-route.put("/:id", editJenisKonseling);
-route.delete("/:id", deleteJenisKonseling);
+route.post(
+  "/",
+  authenticateToken,
+  authorizationRoles("admin"),
+  createJenisKonseling
+);
+route.put(
+  "/:id",
+  authenticateToken,
+  authorizationRoles("admin"),
+  editJenisKonseling
+);
+route.delete(
+  "/:id",
+  authenticateToken,
+  authorizationRoles("admin"),
+  deleteJenisKonseling
+);
 
 module.exports = route;

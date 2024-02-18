@@ -17,11 +17,36 @@ const {
 const { authenticateToken, authorizationRoles } = require("../middleware/auth");
 // const authenticateToken = require("../middleware/auth");
 // contoh penggunaan AUTHENTICATE DAN AUTHORIZATION
-//! route.get("/", authenticateToken, authorizationRoles("admin"), getAllPasien);
+// route.get("/", authenticateToken, authorizationRoles("admin"), getAllPasien);
 route.post("/", createPasien);
-route.get("/", getAllPasien);
-route.get("/:id", getPasienById);
-route.get("/:id/jadwal", getJadwalPasienById);
-route.delete("/:id", deletePasienById);
-route.put("/:id", editPasienById);
+route.get(
+  "/",
+  authenticateToken,
+  authorizationRoles("admin", "pasien"),
+  getAllPasien
+);
+route.get(
+  "/:id",
+  authenticateToken,
+  authorizationRoles("admin"),
+  getPasienById
+);
+route.get(
+  "/:id/jadwal",
+  authenticateToken,
+  authorizationRoles("admin", "pasien"),
+  getJadwalPasienById
+);
+route.delete(
+  "/:id",
+  authenticateToken,
+  authorizationRoles("admin"),
+  deletePasienById
+);
+route.put(
+  "/:id",
+  authenticateToken,
+  authorizationRoles("admin"),
+  editPasienById
+);
 module.exports = route;

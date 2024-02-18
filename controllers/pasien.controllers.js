@@ -16,14 +16,15 @@ module.exports = {
       }
       const hashedPassword = await bcrypt.hashSync(password, 12);
 
-      await Pasien.create({
+      const dataPasien = await Pasien.create({
         nama,
         email,
-        hashedPassword,
+        password: hashedPassword,
         noTelepon,
       });
       res.json({
         message: "Berhasil membuat data",
+        dataPasien,
       });
     } catch (error) {
       res.status(500).json({
